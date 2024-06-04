@@ -2,7 +2,6 @@ package com.testtask.test_task2.controller;
 
 import com.testtask.test_task2.dto.request.HotelRequest;
 import com.testtask.test_task2.dto.response.HotelResponse;
-import com.testtask.test_task2.dto.response.ListHotelsResponse;
 import com.testtask.test_task2.dto.response.ShortHotelResponse;
 import com.testtask.test_task2.service.HotelService;
 import jakarta.validation.Valid;
@@ -26,7 +25,7 @@ public class HotelController {
     private final HotelService hotelService;
 
     @GetMapping("/hotels")
-    public ListHotelsResponse getAllHotels() {
+    public List<ShortHotelResponse> getAllHotels() {
         return hotelService.getAllHotels();
     }
 
@@ -51,8 +50,8 @@ public class HotelController {
     }
 
     @PostMapping("/hotels/{id}/amenities")
-    public void addAmenitiesToHotel(@PathVariable long id, @RequestBody List<String> amenitiesNames) {
-        hotelService.addAmenitiesToHotel(id, amenitiesNames);
+    public HotelResponse addAmenitiesToHotel(@PathVariable long id, @RequestBody List<String> amenitiesNames) {
+        return hotelService.addAmenitiesToHotel(id, amenitiesNames);
     }
 
     @GetMapping("/histogram/{param}")

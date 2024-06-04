@@ -4,6 +4,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,6 +17,8 @@ import static com.testtask.test_task2.util.MessageUtil.*;
 @Getter
 @Setter
 @AllArgsConstructor
+@Builder
+@EqualsAndHashCode
 @NoArgsConstructor
 public class ArrivalTimeDto {
     @NotBlank(message = CHECK_IN_NOT_EMPTY_MESSAGE)

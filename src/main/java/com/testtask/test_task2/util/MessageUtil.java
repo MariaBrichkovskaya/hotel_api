@@ -15,6 +15,7 @@ public class MessageUtil {
     public final String CHECK_IN_NOT_EMPTY_MESSAGE = "Check-in time is mandatory";
     public final String TIME_FORMAT_INVALID_MESSAGE = "Invalid time format. Please use format hh:mm";
     public final String PHONE_NOT_EMPTY_MESSAGE = "Phone is mandatory";
+    public final String PHONE_FORMAT_INVALID_MESSAGE = "Invalid phone format. Please use format +375 xx xxx-xx-xx";
     public final String EMAIL_NOT_EMPTY_MESSAGE = "Email is mandatory";
     public final String EMAIL_INVALID_MESSAGE = "Invalid email address";
     public final String STREET_NOT_EMPTY_MESSAGE = "Street is mandatory";

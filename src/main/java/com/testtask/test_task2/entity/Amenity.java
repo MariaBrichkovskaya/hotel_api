@@ -11,7 +11,10 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 
@@ -21,6 +24,9 @@ import java.util.List;
 @Table(name = "amenity")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Getter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Setter
 public class Amenity {
     @Id
