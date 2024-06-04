@@ -1,0 +1,20 @@
+server:
+  port: 8092
+  servlet:
+    context-path: /property-view
+spring:
+  h2:
+    console.enabled: true
+  datasource:
+    url: jdbc:h2:file:/data/hotelsdb
+    username: sa
+    password: password
+    driverClassName: org.h2.Driver
+  liquibase:
+    enabled: true
+    change-log: db/changelog/db.changelog-master.xml
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: none
+    show-sql: true
