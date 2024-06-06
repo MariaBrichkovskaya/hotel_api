@@ -56,7 +56,7 @@ public class HotelController {
 
     @PostMapping("/hotels")
     @ResponseStatus(HttpStatus.CREATED)
-    @Operation(summary = "Get rides page")
+    @Operation(summary = "Create hotel")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "400", description = "Invalid request"),
             @ApiResponse(responseCode = "201", description = "Hotel was created successfully")})
