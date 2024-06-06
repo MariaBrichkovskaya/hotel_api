@@ -23,5 +23,8 @@ public interface HotelRepository extends JpaRepository<Hotel, Long> {
     @Query("SELECT NEW com.testtask.test_task2.dto.response.HistogramResponse(a.name, COUNT(h)) FROM Amenity a JOIN a.hotels h GROUP BY a.name")
     List<HistogramResponse> getAmenityHistogram();
 
+    boolean existsHotelByContact_Email(String email);
+
+    boolean existsHotelByContact_Phone(String phone);
 }
 

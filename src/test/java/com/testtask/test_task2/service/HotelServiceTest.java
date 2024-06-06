@@ -12,6 +12,7 @@ import com.testtask.test_task2.entity.Amenity;
 import com.testtask.test_task2.entity.ArrivalTime;
 import com.testtask.test_task2.entity.Contact;
 import com.testtask.test_task2.entity.Hotel;
+import com.testtask.test_task2.exception.AlreadyExistsException;
 import com.testtask.test_task2.exception.NotFoundException;
 import com.testtask.test_task2.repository.AddressRepository;
 import com.testtask.test_task2.repository.AmenityRepository;
@@ -118,7 +119,7 @@ class HotelServiceTest {
     }
 
     @Test
-    void searchHotels_withoutParameters_shouldReturnAllHotels() {
+    void searchHotels_withExistingParameters_shouldReturnHotels() {
         doReturn(getHotels())
                 .when(hotelRepository)
                 .findAll();
@@ -126,8 +127,8 @@ class HotelServiceTest {
 
         List<ShortHotelResponse> actual = hotelService.searchHotels(null,
                 null,
-                null,
-                null,
+                DEFAULT_BRAND,
+                DEFAULT_COUNTRY,
                 null
         );
 
@@ -137,6 +138,12 @@ class HotelServiceTest {
 
     @Test
     void createHotel_whenDataIsValid_shouldReturnHotelResponse() {
+        doReturn(false)
+                .when(hotelRepository)
+                .existsHotelByContact_Phone(anyString());
+        doReturn(false)
+                .when(hotelRepository)
+                .existsHotelByContact_Email(anyString());
         doReturn(getDefaultAddress())
                 .when(addressRepository)
                 .save(any(Address.class));
@@ -154,6 +161,8 @@ class HotelServiceTest {
         ShortHotelResponse actual = hotelService.createHotel(hotelRequest);
 
         assertEquals(expected, actual);
+        verify(hotelRepository).existsHotelByContact_Phone(anyString());
+        verify(hotelRepository).existsHotelByContact_Email(anyString());
         verify(modelMapper).map(hotelRequest.address(), Address.class);
         verify(modelMapper).map(hotelRequest.contacts(), Contact.class);
         verify(modelMapper).map(hotelRequest.arrivalTime(), ArrivalTime.class);
@@ -161,6 +170,25 @@ class HotelServiceTest {
         verify(contactRepository).save(any(Contact.class));
         verify(arrivalTimeRepository).save(any(ArrivalTime.class));
         verify(hotelRepository).save(any(Hotel.class));
+    }
+
+    @Test
+    void createHotel_whenDataIsNotUnique_shouldReturnValidationExceptionResponse() {
+        doReturn(true)
+                .when(hotelRepository)
+                .existsHotelByContact_Phone(anyString());
+        doReturn(true)
+                .when(hotelRepository)
+                .existsHotelByContact_Email(anyString());
+
+        assertThrows(
+                AlreadyExistsException.class,
+                () -> hotelService.createHotel(getDefaultHotelRequest())
+        );
+
+        verify(hotelRepository).existsHotelByContact_Phone(anyString());
+        verify(hotelRepository).existsHotelByContact_Email(anyString());
+
 
     }
 

@@ -12,6 +12,7 @@ import com.testtask.test_task2.entity.Amenity;
 import com.testtask.test_task2.entity.ArrivalTime;
 import com.testtask.test_task2.entity.Contact;
 import com.testtask.test_task2.entity.Hotel;
+import com.testtask.test_task2.exception.AlreadyExistsException;
 import com.testtask.test_task2.exception.NotFoundException;
 import com.testtask.test_task2.repository.AddressRepository;
 import com.testtask.test_task2.repository.AmenityRepository;
@@ -93,11 +94,13 @@ public class HotelService {
     }
 
     public ShortHotelResponse createHotel(HotelRequest hotelRequest) {
+        checkCreateDataIsUnique(hotelRequest);
         Address address = addressRepository.save(modelMapper.map(hotelRequest.address(), Address.class));
         Contact contact = contactRepository.save(modelMapper.map(hotelRequest.contacts(), Contact.class));
         ArrivalTime arrivalTime = arrivalTimeRepository.save(modelMapper.map(hotelRequest.arrivalTime(), ArrivalTime.class));
         Hotel hotel = hotelRepository.save(
                 Hotel.builder()
+                        .description(hotelRequest.description())
                         .name(hotelRequest.name())
                         .address(address)
                         .brand(hotelRequest.brand())
@@ -179,6 +182,35 @@ public class HotelService {
                 .phone(hotel.getContact().getPhone())
                 .address(hotel.getAddress().toString())
                 .build();
+    }
+
+    private void checkEmailIsUnique(String email, Map<String, String> errors) {
+        if (hotelRepository.existsHotelByContact_Email(email)) {
+            errors.put(
+                    "email",
+                    String.format(HOTEL_WITH_EMAIL_EXISTS_MESSAGE, email)
+            );
+        }
+    }
+
+    private void checkPhoneIsUnique(String phone, Map<String, String> errors) {
+        if (hotelRepository.existsHotelByContact_Phone(phone)) {
+            errors.put(
+                    "phone",
+                    String.format(HOTEL_WITH_PHONE_EXISTS_MESSAGE, phone)
+            );
+        }
+    }
+
+    private void checkCreateDataIsUnique(HotelRequest request) {
+        var errors = new HashMap<String, String>();
+
+        checkEmailIsUnique(request.contacts().getEmail(), errors);
+        checkPhoneIsUnique(request.contacts().getPhone(), errors);
+
+        if (!errors.isEmpty()) {
+            throw new AlreadyExistsException(errors);
+        }
     }
 
 }

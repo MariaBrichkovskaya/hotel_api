@@ -59,7 +59,9 @@ public class HotelController {
     @Operation(summary = "Create hotel")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "400", description = "Invalid request"),
-            @ApiResponse(responseCode = "201", description = "Hotel was created successfully")})
+            @ApiResponse(responseCode = "201", description = "Hotel was created successfully"),
+            @ApiResponse(responseCode = "409", description = "Hotel with such phone or email already exists")
+    })
     public ShortHotelResponse createHotel(@RequestBody @Valid HotelRequest hotelRequest) {
         return hotelService.createHotel(hotelRequest);
     }

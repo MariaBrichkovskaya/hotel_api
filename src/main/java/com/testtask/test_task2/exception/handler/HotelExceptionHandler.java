@@ -2,6 +2,7 @@ package com.testtask.test_task2.exception.handler;
 
 import com.testtask.test_task2.dto.response.ExceptionResponse;
 import com.testtask.test_task2.dto.response.ValidationExceptionResponse;
+import com.testtask.test_task2.exception.AlreadyExistsException;
 import com.testtask.test_task2.exception.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
@@ -42,5 +43,15 @@ public class HotelExceptionHandler {
             errors.put(fieldName, errorMessage);
         });
         return new ValidationExceptionResponse(HttpStatus.BAD_REQUEST, VALIDATION_FAILED_MESSAGE, errors);
+    }
+
+    @ExceptionHandler(AlreadyExistsException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ValidationExceptionResponse handleDriverAlreadyExists(AlreadyExistsException alreadyExistsException) {
+        return new ValidationExceptionResponse(HttpStatus.CONFLICT,
+                alreadyExistsException.getMessage(),
+                alreadyExistsException.getErrors()
+
+        );
     }
 }
