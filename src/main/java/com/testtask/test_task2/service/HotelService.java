@@ -57,21 +57,34 @@ public class HotelService {
 
     public List<ShortHotelResponse> searchHotels(String city, String name, String brand, String country, List<String> amenities) {
 
-        List<Hotel> hotels = new ArrayList<>(hotelRepository.findAll());
+        List<Hotel> hotels = hotelRepository.findAll();
         if (city != null) {
-            hotels.retainAll(hotelRepository.findByCityIgnoreCase(city));
+            hotels = hotels.stream()
+                    .filter(hotel -> hotel.getAddress().getCity().equalsIgnoreCase(city))
+                    .toList();
         }
         if (name != null) {
-            hotels.retainAll(hotelRepository.findByNameIgnoreCase(name));
+            hotels = hotels.stream()
+                    .filter(hotel -> hotel.getName().equalsIgnoreCase(name))
+                    .toList();
         }
         if (brand != null) {
-            hotels.retainAll(hotelRepository.findByBrandIgnoreCase(brand));
+            hotels = hotels.stream()
+                    .filter(hotel -> hotel.getBrand().equalsIgnoreCase(brand))
+                    .toList();
         }
         if (country != null) {
-            hotels.retainAll(hotelRepository.findByCountryIgnoreCase(country));
+            hotels = hotels.stream()
+                    .filter(hotel -> hotel.getAddress().getCountry().equalsIgnoreCase(country))
+                    .toList();
         }
         if (amenities != null && !amenities.isEmpty()) {
-            hotels.retainAll(hotelRepository.findByAmenitiesIgnoreCase(amenities));
+            hotels = hotels.stream()
+                    .filter(hotel -> amenities.stream()
+                            .allMatch(amenity -> hotel.getAmenities().stream()
+                                    .anyMatch(hotelAmenity -> hotelAmenity.getName().equalsIgnoreCase(amenity))))
+                    .toList();
+
         }
 
         return hotels.stream()

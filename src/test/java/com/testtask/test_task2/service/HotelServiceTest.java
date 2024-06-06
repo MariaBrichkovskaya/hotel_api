@@ -37,7 +37,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
@@ -104,18 +103,6 @@ class HotelServiceTest {
         doReturn(getHotels())
                 .when(hotelRepository)
                 .findAll();
-        doReturn(getHotels())
-                .when(hotelRepository)
-                .findByCityIgnoreCase(NEW_CITY);
-        doReturn(getHotels())
-                .when(hotelRepository)
-                .findByNameIgnoreCase(DEFAULT_NAME);
-        doReturn(getHotels())
-                .when(hotelRepository)
-                .findByBrandIgnoreCase(DEFAULT_BRAND);
-        doReturn(getHotels())
-                .when(hotelRepository)
-                .findByCountryIgnoreCase(DEFAULT_COUNTRY);
         List<ShortHotelResponse> expected = List.of();
 
         List<ShortHotelResponse> actual = hotelService.searchHotels(
@@ -128,11 +115,6 @@ class HotelServiceTest {
 
         assertEquals(expected, actual);
         verify(hotelRepository).findAll();
-        verify(hotelRepository).findByBrandIgnoreCase(DEFAULT_BRAND);
-        verify(hotelRepository).findByCityIgnoreCase(NEW_CITY);
-        verify(hotelRepository).findByNameIgnoreCase(DEFAULT_NAME);
-        verify(hotelRepository).findByCountryIgnoreCase(DEFAULT_COUNTRY);
-        verify(hotelRepository, times(0)).findByAmenitiesIgnoreCase(any());
     }
 
     @Test
@@ -151,11 +133,6 @@ class HotelServiceTest {
 
         assertEquals(expected, actual);
         verify(hotelRepository).findAll();
-        verify(hotelRepository, times(0)).findByBrandIgnoreCase(anyString());
-        verify(hotelRepository, times(0)).findByCityIgnoreCase(anyString());
-        verify(hotelRepository, times(0)).findByNameIgnoreCase(anyString());
-        verify(hotelRepository, times(0)).findByCountryIgnoreCase(anyString());
-        verify(hotelRepository, times(0)).findByAmenitiesIgnoreCase(any());
     }
 
     @Test
