@@ -50,8 +50,7 @@ public class HotelService {
     }
 
     public HotelResponse getHotelById(long id) {
-        Hotel hotel = hotelRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException(NOT_FOUND_WITH_ID_MESSAGE.formatted(id)));
+        Hotel hotel = checkHotelExists(id);
         return fromHotelToResponse(hotel);
     }
 
@@ -85,7 +84,6 @@ public class HotelService {
                             .allMatch(amenity -> hotel.getAmenities().stream()
                                     .anyMatch(hotelAmenity -> hotelAmenity.getName().equalsIgnoreCase(amenity))))
                     .toList();
-
         }
 
         return hotels.stream()
@@ -119,28 +117,13 @@ public class HotelService {
     }
 
     public HotelResponse addAmenitiesToHotel(long id, List<String> amenityNames) {
-        Hotel hotel = hotelRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException(NOT_FOUND_WITH_ID_MESSAGE.formatted(id)));
-
-        List<Amenity> amenities = new ArrayList<>();
-        for (String amenityName : amenityNames) {
-            Optional<Amenity> existingAmenity = amenityRepository.findByName(amenityName);
-            if (existingAmenity.isPresent()) {
-                amenities.add(existingAmenity.get());
-            } else {
-                Amenity newAmenity = amenityRepository.save(
-                        Amenity.builder()
-                                .name(amenityName)
-                                .build()
-                );
-                amenities.add(newAmenity);
-            }
-        }
+        Hotel hotel = checkHotelExists(id);
         List<Amenity> currentAmenities = new ArrayList<>(hotel.getAmenities());
-        currentAmenities.addAll(amenities);
+        List<Amenity> newAmenities = findOrCreateAmenities(amenityNames, currentAmenities);
+        currentAmenities.addAll(newAmenities);
         hotel.setAmenities(currentAmenities);
-
         hotelRepository.save(hotel);
+
         return fromHotelToResponse(hotel);
     }
 
@@ -159,6 +142,32 @@ public class HotelService {
                 );
         return map;
     }
+
+    private Hotel checkHotelExists(long id) {
+        return hotelRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(NOT_FOUND_WITH_ID_MESSAGE.formatted(id)));
+    }
+
+    private List<Amenity> findOrCreateAmenities(List<String> amenityNames, List<Amenity> hotelAmenities) {
+        List<Amenity> amenities = new ArrayList<>();
+        for (String amenityName : amenityNames) {
+            Optional<Amenity> existingAmenity = amenityRepository.findByName(amenityName);
+            if (existingAmenity.isPresent()) {
+                if (!hotelAmenities.contains(existingAmenity.get())) {
+                    amenities.add(existingAmenity.get());
+                }
+            } else {
+                Amenity newAmenity = amenityRepository.save(
+                        Amenity.builder()
+                                .name(amenityName)
+                                .build()
+                );
+                amenities.add(newAmenity);
+            }
+        }
+        return amenities;
+    }
+
 
     private HotelResponse fromHotelToResponse(Hotel hotel) {
         return HotelResponse.builder()
