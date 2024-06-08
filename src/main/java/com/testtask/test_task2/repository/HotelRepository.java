@@ -17,8 +17,8 @@ public interface HotelRepository extends JpaRepository<Hotel, Long> {
     @Query("SELECT NEW com.testtask.test_task2.dto.response.HistogramResponse(h.brand, COUNT(h)) FROM Hotel h GROUP BY h.brand")
     List<HistogramResponse> getBrandyHistogram();
 
-    @Query("SELECT NEW com.testtask.test_task2.dto.response.HistogramResponse(h.address.country, COUNT(h)) FROM Hotel h GROUP BY h.address.country")
-    List<HistogramResponse> getCountryHistogram();
+    @Query("SELECT NEW com.testtask.test_task2.dto.response.HistogramResponse(h.address.county, COUNT(h)) FROM Hotel h GROUP BY h.address.county")
+    List<HistogramResponse> getCountyHistogram();
 
     @Query("SELECT NEW com.testtask.test_task2.dto.response.HistogramResponse(a.name, COUNT(h)) FROM Amenity a JOIN a.hotels h GROUP BY a.name")
     List<HistogramResponse> getAmenityHistogram();

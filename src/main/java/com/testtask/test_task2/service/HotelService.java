@@ -75,7 +75,7 @@ public class HotelService {
         }
         if (country != null) {
             hotels = hotels.stream()
-                    .filter(hotel -> hotel.getAddress().getCountry().equalsIgnoreCase(country))
+                    .filter(hotel -> hotel.getAddress().getCounty().equalsIgnoreCase(country))
                     .toList();
         }
         if (amenities != null && !amenities.isEmpty()) {
@@ -123,7 +123,6 @@ public class HotelService {
         currentAmenities.addAll(newAmenities);
         hotel.setAmenities(currentAmenities);
         hotelRepository.save(hotel);
-
         return fromHotelToResponse(hotel);
     }
 
@@ -132,7 +131,7 @@ public class HotelService {
         List<HistogramResponse> histogram = switch (param) {
             case "city" -> hotelRepository.getCityHistogram();
             case "brand" -> hotelRepository.getBrandyHistogram();
-            case "country" -> hotelRepository.getCountryHistogram();
+            case "county" -> hotelRepository.getCountyHistogram();
             case "amenities" -> hotelRepository.getAmenityHistogram();
             default -> throw new IllegalStateException(ILLEGAL_STATE_MESSAGE.formatted(param));
         };
@@ -167,7 +166,6 @@ public class HotelService {
         }
         return amenities;
     }
-
 
     private HotelResponse fromHotelToResponse(Hotel hotel) {
         return HotelResponse.builder()

@@ -25,7 +25,7 @@ public class TestUtils {
     public final String DEFAULT_BRAND = "Hilton";
     public final String DEFAULT_CITY = "Minsk";
     public final String NEW_CITY = "Fanipol";
-    public final String DEFAULT_COUNTRY = "Belarus";
+    public final String DEFAULT_COUNTY = "Belarus";
     public final String DEFAULT_EMAIL = "maria@example.com";
     private final ModelMapper modelMapper = new ModelMapper();
 
@@ -39,7 +39,7 @@ public class TestUtils {
                 .houseNumber(9)
                 .postCode("220004")
                 .street("Pobediteley Avenue")
-                .country(DEFAULT_COUNTRY)
+                .county(DEFAULT_COUNTY)
                 .build();
 
     }

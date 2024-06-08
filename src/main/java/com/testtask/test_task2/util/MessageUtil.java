@@ -20,12 +20,10 @@ public class MessageUtil {
     public final String EMAIL_INVALID_MESSAGE = "Invalid email address";
     public final String STREET_NOT_EMPTY_MESSAGE = "Street is mandatory";
     public final String CITY_NOT_EMPTY_MESSAGE = "City is mandatory";
-    public final String COUNTRY_NOT_EMPTY_MESSAGE = "Country is mandatory";
+    public final String COUNTY_NOT_EMPTY_MESSAGE = "County is mandatory";
     public final String POST_CODE_NOT_EMPTY_MESSAGE = "Post code is mandatory";
     public final String MIN_VALUE_MESSAGE = "Min value is 1";
     public final String HOTEL_WITH_EMAIL_EXISTS_MESSAGE = "Hotel with email %s already exists";
     public final String HOTEL_WITH_PHONE_EXISTS_MESSAGE = "Hotel with phone %s already exists";
     public final String HOTEL_ALREADY_EXISTS_MESSAGE = "Hotel already exists";
-
-
 }

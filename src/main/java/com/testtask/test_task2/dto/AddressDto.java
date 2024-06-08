@@ -34,8 +34,8 @@ public class AddressDto {
     @Schema(example = "Minsk")
     String city;
     @Schema(example = "Belarus")
-    @NotBlank(message = COUNTRY_NOT_EMPTY_MESSAGE)
-    String country;
+    @NotBlank(message = COUNTY_NOT_EMPTY_MESSAGE)
+    String county;
     @Schema(example = "220004")
     @NotBlank(message = POST_CODE_NOT_EMPTY_MESSAGE)
     String postCode;

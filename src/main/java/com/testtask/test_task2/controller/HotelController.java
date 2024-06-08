@@ -43,15 +43,15 @@ public class HotelController {
     }
 
     @GetMapping("/search")
-    @Operation(summary = "Search hotels by city, name, brand, country and amenities")
+    @Operation(summary = "Search hotels by city, name, brand, county and amenities")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Searching hotels by params was successful")})
     public List<ShortHotelResponse> searchHotels(@RequestParam(required = false) String city,
                                                  @RequestParam(required = false) String name,
                                                  @RequestParam(required = false) String brand,
-                                                 @RequestParam(required = false) String country,
+                                                 @RequestParam(required = false) String county,
                                                  @RequestParam(required = false) List<String> amenities) {
-        return hotelService.searchHotels(city, name, brand, country, amenities);
+        return hotelService.searchHotels(city, name, brand, county, amenities);
     }
 
     @PostMapping("/hotels")

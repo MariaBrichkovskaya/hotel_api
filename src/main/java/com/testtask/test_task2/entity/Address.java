@@ -29,14 +29,14 @@ public class Address {
     @Column(name = "city")
     String city;
 
-    @Column(name = "country")
-    String country;
+    @Column(name = "county")
+    String county;
 
     @Column(name = "post_code")
     String postCode;
 
     @Override
     public String toString() {
-        return houseNumber + " " + street + ", " + city + ", " + postCode + ", " + country;
+        return houseNumber + " " + street + ", " + city + ", " + postCode + ", " + county;
     }
 }

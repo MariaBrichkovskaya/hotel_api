@@ -110,7 +110,7 @@ class HotelServiceTest {
                 NEW_CITY,
                 DEFAULT_NAME,
                 DEFAULT_BRAND,
-                DEFAULT_COUNTRY,
+                DEFAULT_COUNTY,
                 null
         );
 
@@ -128,7 +128,7 @@ class HotelServiceTest {
         List<ShortHotelResponse> actual = hotelService.searchHotels(null,
                 null,
                 DEFAULT_BRAND,
-                DEFAULT_COUNTRY,
+                DEFAULT_COUNTY,
                 null
         );
 
